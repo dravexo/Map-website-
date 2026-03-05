@@ -1,11 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Dravexo AI Analytics</title>
+<title>Dravexo AI Analytics Dashboard & Live Visitor Map Tool</title>
+
+<meta name="description" content="Dravexo AI Analytics dashboard provides real time visitor tracking, device analytics, live map tracking and website traffic monitoring tool. Free analytics tool for websites.">
+
+<meta name="keywords" content="AI analytics dashboard, visitor tracker, website analytics tool, live visitor map, website tracking, dravexo ai tools">
+
+<meta name="robots" content="index, follow">
+
+<meta property="og:title" content="Dravexo AI Analytics Dashboard">
+<meta property="og:description" content="Track visitors, device analytics and real time map tracking with Dravexo AI analytics dashboard.">
+<meta property="og:type" content="website">
 
 <link rel="stylesheet"
 href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
@@ -21,9 +32,24 @@ color:white;
 
 header{
 text-align:center;
-padding:20px;
-font-size:28px;
+padding:25px;
+font-size:32px;
 background:#0f172a;
+}
+
+nav{
+text-align:center;
+padding:20px;
+}
+
+nav a{
+padding:12px 25px;
+margin:10px;
+background:#38bdf8;
+color:black;
+text-decoration:none;
+border-radius:8px;
+font-weight:bold;
 }
 
 .container{
@@ -49,9 +75,22 @@ text-align:center;
 
 #map{
 height:450px;
-margin-top:20px;
+margin-top:40px;
 border-radius:10px;
 border:2px solid #38bdf8;
+}
+
+.article{
+margin-top:40px;
+line-height:1.7;
+font-size:17px;
+}
+
+footer{
+text-align:center;
+margin-top:40px;
+padding:20px;
+background:#0f172a;
 }
 
 </style>
@@ -60,11 +99,18 @@ border:2px solid #38bdf8;
 
 <body>
 
-<header>Dravexo AI Dashboard</header>
+<header>
+Dravexo AI Analytics
+</header>
+
+<nav>
+<a href="#dashboard">Dashboard</a>
+<a href="#map">Visitor Map</a>
+</nav>
 
 <div class="container">
 
-<div class="dashboard">
+<div id="dashboard" class="dashboard">
 
 <div class="card">
 Visitors
@@ -90,13 +136,96 @@ Time
 
 <div id="map"></div>
 
+<div class="article">
+
+<h1>Dravexo AI Analytics Dashboard</h1>
+
+<p>
+Dravexo AI Analytics dashboard is a modern website analytics system designed
+to help website owners track visitors, understand traffic behavior and
+monitor website performance in real time. This powerful analytics system
+combines live visitor tracking, device detection, traffic monitoring and
+interactive maps to give website owners complete insight into their online
+audience.
+</p>
+
+<h2>Real Time Visitor Tracking</h2>
+
+<p>
+Real time visitor tracking is one of the most important tools for modern
+websites. Understanding how many visitors are on your website, where they
+are located and how they interact with your content allows website owners
+to optimize their content and improve user experience. The Dravexo AI
+analytics dashboard provides a simple but powerful visitor counter that
+updates automatically when users open the page.
+</p>
+
+<h2>Live Website Analytics</h2>
+
+<p>
+Website analytics is essential for businesses, bloggers, developers and
+online creators. By analyzing traffic data you can understand how visitors
+discover your website, which devices they use and how long they stay on your
+pages. The analytics system in this dashboard tracks visitor numbers, page
+views, device types and user time.
+</p>
+
+<h2>Device Detection Technology</h2>
+
+<p>
+Device analytics helps website owners understand whether their visitors are
+using mobile phones, tablets or desktop computers. Mobile traffic continues
+to grow worldwide, which means responsive design and mobile optimization are
+more important than ever.
+</p>
+
+<h2>Interactive Visitor Map</h2>
+
+<p>
+The interactive map system uses modern mapping technology to show user
+locations and geographic data visually. Maps help website owners understand
+global traffic patterns and identify where their visitors are located.
+</p>
+
+<h2>Benefits of Using AI Analytics Tools</h2>
+
+<p>
+AI powered analytics tools provide valuable insights into user behavior and
+website performance. These tools help identify trends, monitor engagement
+and improve website optimization. By analyzing traffic patterns and visitor
+behavior, website owners can create better content strategies and improve
+their search engine rankings.
+</p>
+
+<h2>SEO Benefits of Analytics Tracking</h2>
+
+<p>
+Search engine optimization requires accurate data about website visitors and
+traffic patterns. Analytics dashboards provide essential information about
+user engagement, page performance and traffic sources. This information helps
+optimize content and improve search rankings.
+</p>
+
+<p>
+Dravexo AI Analytics dashboard is designed to be lightweight, fast and
+simple to integrate into any website. It works on modern browsers, supports
+mobile devices and provides real time data without complicated installation.
+</p>
+
 </div>
+
+</div>
+
+<footer>
+
+<a href="#dashboard">Dashboard</a> |
+<a href="#map">Map</a>
+
+</footer>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
-
-// VISITORS
 
 let visitors = localStorage.getItem("visitors");
 
@@ -109,9 +238,6 @@ visitors++;
 localStorage.setItem("visitors",visitors);
 document.getElementById("visitors").innerText=visitors;
 
-
-// PAGE VIEWS
-
 let views = localStorage.getItem("views");
 
 if(views==null){
@@ -123,17 +249,11 @@ views++;
 localStorage.setItem("views",views);
 document.getElementById("views").innerText=views;
 
-
-// DEVICE
-
 if(/Mobi|Android/i.test(navigator.userAgent)){
 document.getElementById("device").innerText="Mobile";
 }else{
 document.getElementById("device").innerText="Desktop";
 }
-
-
-// TIME
 
 function updateTime(){
 document.getElementById("time").innerText =
@@ -142,17 +262,11 @@ new Date().toLocaleTimeString();
 
 setInterval(updateTime,1000);
 
-
-// MAP START
-
 var map = L.map('map').setView([20.5937,78.9629],5);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
 maxZoom:19
 }).addTo(map);
-
-
-// USER LOCATION
 
 if(navigator.geolocation){
 
@@ -165,12 +279,6 @@ map.setView([lat,lon],12);
 
 L.marker([lat,lon]).addTo(map)
 .bindPopup("You are here")
-.openPopup();
-
-}, function(){
-
-L.marker([28.6139,77.2090]).addTo(map)
-.bindPopup("Default Location")
 .openPopup();
 
 });
