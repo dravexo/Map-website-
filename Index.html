@@ -1,44 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>World Map - Nishant Demo</title>
- <!-- Leaflet CSS (interactive map ke liye) -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" 
-        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5n/N0aVIE=" crossorigin=""/>
-  
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="styles.css" />
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Dravexo AI Analytics</title>
+
+<link rel="stylesheet"
+href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background:#020617;
+color:white;
+}
+
+header{
+text-align:center;
+padding:20px;
+font-size:28px;
+background:#0f172a;
+}
+
+.container{
+width:95%;
+margin:auto;
+}
+
+.dashboard{
+display:flex;
+flex-wrap:wrap;
+gap:15px;
+margin-top:20px;
+}
+
+.card{
+flex:1;
+min-width:180px;
+background:#1e293b;
+padding:20px;
+border-radius:10px;
+text-align:center;
+}
+
+#map{
+height:450px;
+margin-top:20px;
+border-radius:10px;
+border:2px solid #38bdf8;
+}
+
+</style>
+
 </head>
+
 <body>
-  <!-- Top Ad Placeholder (Adsterra ke liye) -->
-  <div class="ad-top">
-    <p>[Adsterra Banner Placeholder - 728×90]</p>
-  </div>
 
-  <!-- Map ID -->
-  <div id="map"></div>
+<header>Dravexo AI Dashboard</header>
 
-  <!-- Visitor Counter (Dassword / Hits) -->
-  <div class="visitor-counter">
-    <h2>Kitne Log Aaye Hain (Visitors Count)</h2>
-    <!-- Hits Badge – Yeh apne actual repo URL se update kar (generator se) -->
-   <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fdravexo.github.io%2FMap-website-%2F&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=Visitors&edge_flat=false" alt="Visitors Count" /> <!-- Current example: https://dravexo.github.io/map-website/ (hyphen remove karke) -->
-  
-    <!-- Generator link: https://hits.seeyoufarm.com pe jaake apna exact URL daal aur img code copy kar lo -->
-  </div>
+<div class="container">
 
-  <!-- Bottom Ad Placeholder -->
-  <div class="ad-bottom">
-    <p>[Adsterra Footer / Native Ads Placeholder]</p>
-  </div>
+<div class="dashboard">
 
-  <!-- Leaflet JS -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" 
-          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-  
-  <!-- Custom JS -->
-  <script src="script.js"></script>
+<div class="card">
+Visitors
+<h2 id="visitors">0</h2>
+</div>
+
+<div class="card">
+Page Views
+<h2 id="views">0</h2>
+</div>
+
+<div class="card">
+Device
+<h2 id="device">Detecting</h2>
+</div>
+
+<div class="card">
+Time
+<h2 id="time"></h2>
+</div>
+
+</div>
+
+<div id="map"></div>
+
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+
+// VISITORS
+
+let visitors = localStorage.getItem("visitors");
+
+if(visitors==null){
+visitors=1;
+}else{
+visitors++;
+}
+
+localStorage.setItem("visitors",visitors);
+document.getElementById("visitors").innerText=visitors;
+
+
+// PAGE VIEWS
+
+let views = localStorage.getItem("views");
+
+if(views==null){
+views=1;
+}else{
+views++;
+}
+
+localStorage.setItem("views",views);
+document.getElementById("views").innerText=views;
+
+
+// DEVICE
+
+if(/Mobi|Android/i.test(navigator.userAgent)){
+document.getElementById("device").innerText="Mobile";
+}else{
+document.getElementById("device").innerText="Desktop";
+}
+
+
+// TIME
+
+function updateTime(){
+document.getElementById("time").innerText =
+new Date().toLocaleTimeString();
+}
+
+setInterval(updateTime,1000);
+
+
+// MAP START
+
+var map = L.map('map').setView([20.5937,78.9629],5);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+maxZoom:19
+}).addTo(map);
+
+
+// USER LOCATION
+
+if(navigator.geolocation){
+
+navigator.geolocation.getCurrentPosition(function(position){
+
+var lat = position.coords.latitude;
+var lon = position.coords.longitude;
+
+map.setView([lat,lon],12);
+
+L.marker([lat,lon]).addTo(map)
+.bindPopup("You are here")
+.openPopup();
+
+}, function(){
+
+L.marker([28.6139,77.2090]).addTo(map)
+.bindPopup("Default Location")
+.openPopup();
+
+});
+
+}
+
+</script>
+
 </body>
 </html>
